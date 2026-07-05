@@ -22,6 +22,8 @@ The project includes a Flask annotation web interface, data cleanup scripts, the
 │   ├── base.html
 │   ├── index.html
 │   └── edit.html
+├── UI.png                       # Main dashboard screenshot
+├── UI_edit.png                  # Editor interface screenshot
 ├── app.py                       # Flask annotation web application
 ├── lowercase_keywords.py        # script to standardize Armenian address casing
 ├── searchfordoubles.sql         # SQL query to locate duplicates in the database
@@ -54,6 +56,14 @@ To set up the database locally:
 ## 2. Flask Web Application (`app.py`)
 
 The Flask application provides an interface for annotators to review, edit, search, and delete records from the PostgreSQL database.
+
+### UI Screenshots
+
+#### Main Dashboard (Record List)
+![Main Dashboard](UI.png)
+
+#### Record Editor (with Autocomplete Lookups)
+![Record Editor](UI_edit.png)
 
 ### Features:
 - **Pagination & Search:** Easily browse records (50 per page) or search directly for specific record IDs.
