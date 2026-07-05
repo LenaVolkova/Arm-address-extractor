@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}addr_texts — list{% endblock %}
+{% block content %}
+<h1>addr_texts <small style="font-weight: normal; color: #666;">({{ total }} records)</small></h1>
+
+<form class="search" method="get" action="{{ url_for('index') }}">
+    <input type="text" name="q" value="{{ q }}" placeholder="search by record id" inputmode="numeric">
+    <button type="submit">Search</button>
+    {% if q %}<a href="{{ url_for('index') }}">clear</a>{% endif %}
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>id</th>
+            <th>key</th>
+            <th>addr_num</th>
+            <th>region</th>
+            <th>cityname</th>
+            <th>citytype</th>
+            <th>district</th>
+            <th>street</th>
+            <th>bldnum</th>
+            <th>bldlist</th>
+            <th>text</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+        <tr>
+            <td class="actions">
+                <form method="post" action="{{ url_for('delete', row_id=r.id) }}"
+                      onsubmit="return confirm('Delete row id={{ r.id }}?');">
+                    <input type="hidden" name="page" value="{{ page }}">
+                    <input type="hidden" name="q" value="{{ q }}">
+                    <button type="submit" class="btn-delete">delete</button>
+                </form>
+            </td>
+            <td>{{ r.id }}</td>
+            <td>{{ r.key if r.key is not none else '' }}</td>
+            <td>{{ r.addr_num or '' }}</td>
+            <td>{{ r.region or '' }}</td>
+            <td>{{ r.cityname or '' }}</td>
+            <td>{{ r.citytype or '' }}</td>
+            <td>{{ r.district or '' }}</td>
+            <td>{{ r.street or '' }}</td>
+            <td>{{ r.bldnum or '' }}</td>
+            <td>{{ r.bldlist or '' }}</td>
+            <td class="text-cell" title="{{ r.text }}">
+                {{ r.text[:120] }}{% if r.text|length > 120 %}…{% endif %}
+            </td>
+            <td class="actions">
+                <a class="btn-edit" href="{{ url_for('edit', row_id=r.id, page=page, q=q) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="13" style="text-align: center; color: #888;">No data</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="{{ page_url(1) }}">« first</a>
+        <a href="{{ page_url(page - 1) }}">‹ prev</a>
+    {% endif %}
+    <span>page {{ page }} / {{ total_pages }}</span>
+    {% if page < total_pages %}
+        <a href="{{ page_url(page + 1) }}">next ›</a>
+        <a href="{{ page_url(total_pages) }}">last »</a>
+    {% endif %}
+    <form method="get" action="{{ url_for('index') }}" class="goto-page">
+        <input type="hidden" name="q" value="{{ q }}">
+        <label>go to page
+            <input type="number" name="page" min="1" max="{{ total_pages }}" value="{{ page }}">
+        </label>
+        <button type="submit">Go</button>
+    </form>
+</div>
+{% endblock %}

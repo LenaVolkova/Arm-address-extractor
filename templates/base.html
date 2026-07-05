@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}addr_texts{% endblock %}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 1rem; color: #222; }
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        h1 { margin-top: 0; }
+        table { border-collapse: collapse; width: 100%; font-size: 13px; }
+        th, td { border: 1px solid #ddd; padding: 4px 6px; vertical-align: top; }
+        th { background: #f5f5f5; text-align: left; position: sticky; top: 0; }
+        tr:nth-child(even) td { background: #fafafa; }
+        td.text-cell { max-width: 380px; overflow: hidden; text-overflow: ellipsis; }
+        td.actions { white-space: nowrap; text-align: center; }
+        .actions form { display: inline; margin: 0; }
+        button, .btn { padding: 3px 10px; cursor: pointer; }
+        .btn-delete { background: #fee; border: 1px solid #c00; color: #c00; }
+        .btn-edit { background: #eef6ff; border: 1px solid #0366d6; color: #0366d6; padding: 3px 10px; }
+        .pagination { margin: 1rem 0; display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+        .pagination a, .pagination > span { margin: 0; }
+        .pagination .goto-page { display: inline-flex; align-items: center; gap: .35rem; margin-left: 1rem; }
+        .pagination .goto-page input[type=number] { width: 70px; padding: 3px 6px; }
+        .flash { padding: .5rem 1rem; margin: .5rem 0; border-radius: 4px; }
+        .flash.success { background: #e6ffed; border: 1px solid #34d058; }
+        .flash.error { background: #ffeef0; border: 1px solid #d73a49; }
+        form.search { margin-bottom: 1rem; }
+        form.search input[type=text] { padding: 4px 8px; width: 320px; }
+        .edit-form { max-width: 720px; }
+        .edit-form label { display: block; margin: .6rem 0 .15rem; font-weight: 600; font-size: 13px; }
+        .edit-form input[type=text], .edit-form select, .edit-form textarea {
+            width: 100%; padding: 4px 6px; font-size: 14px; box-sizing: border-box;
+        }
+        .edit-form .readonly { background: #f5f5f5; color: #555; }
+        .edit-form .actions-row { margin-top: 1.2rem; }
+        .edit-form .actions-row button { margin-right: .5rem; padding: 6px 14px; }
+        .edit-form .actions-row .btn-close {
+            display: inline-block; padding: 6px 14px; border: 1px solid #999;
+            background: #f5f5f5; color: #333; border-radius: 3px; text-decoration: none;
+        }
+        .edit-form .actions-row .btn-close:hover { background: #eaeaea; text-decoration: none; }
+        .edit-form .actions-row button:disabled { opacity: .5; cursor: not-allowed; }
+        .edit-form .addr-num-group { display: flex; align-items: stretch; gap: 4px; }
+        .edit-form .addr-num-group input[type=text] { flex: 1; }
+        .edit-form .addr-num-btn {
+            width: 32px; padding: 0; font-size: 18px; line-height: 1;
+            border: 1px solid #999; background: #f5f5f5; color: #333;
+            cursor: pointer; border-radius: 3px; user-select: none;
+        }
+        .edit-form .addr-num-btn:hover { background: #eaeaea; }
+        .edit-form .addr-num-btn:active { background: #ddd; }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>

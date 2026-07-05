@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}edit id={{ row.id }}{% endblock %}
+{% block content %}
+<p><a href="{{ close_url }}">← back to list</a></p>
+<h1>Edit row id={{ row.id }}</h1>
+
+<form class="edit-form" method="post" action="{{ url_for('edit', row_id=row.id) }}">
+    <input type="hidden" name="return_page" value="{{ return_page }}">
+    <input type="hidden" name="return_q" value="{{ return_q }}">
+    <label>id (read-only)</label>
+    <input type="text" class="readonly" value="{{ row.id }}" readonly>
+
+    <label>key (read-only)</label>
+    <input type="text" class="readonly" value="{{ row.key if row.key is not none else '' }}" readonly>
+
+    <label>text (read-only)</label>
+    <textarea class="readonly" rows="5" readonly>{{ row.text }}</textarea>
+
+    <label>addr_num</label>
+    <div class="addr-num-group">
+        <button type="button" class="addr-num-btn" data-step="-1" aria-label="decrement">−</button>
+        <input type="text" name="addr_num" id="addr_num" value="{{ row.addr_num or '' }}" inputmode="numeric">
+        <button type="button" class="addr-num-btn" data-step="1" aria-label="increment">+</button>
+    </div>
+
+    <label>region</label>
+    <input type="text" name="region" value="{{ row.region or '' }}" list="regions-list" autocomplete="off">
+
+    <label>cityname</label>
+    <input type="text" name="cityname" value="{{ row.cityname or '' }}" list="cities-list" autocomplete="off">
+
+    <label>citytype</label>
+    <select name="citytype">
+        {% for choice in citytype_choices %}
+            <option value="{{ choice }}" {% if (row.citytype or '') == choice %}selected{% endif %}>
+                {{ choice if choice else '— empty —' }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>district</label>
+    <input type="text" name="district" value="{{ row.district or '' }}" list="districts-list" autocomplete="off">
+
+    <label>street</label>
+    <input type="text" name="street" value="{{ row.street or '' }}" list="streets-list" autocomplete="off">
+
+    <label>bldnum</label>
+    <input type="text" name="bldnum" value="{{ row.bldnum or '' }}">
+
+    <label>bldlist</label>
+    <input type="text" name="bldlist" value="{{ row.bldlist or '' }}">
+
+    <div class="actions-row">
+        <button type="submit" name="action" value="save">Save</button>
+        <button type="submit" name="action" value="save_as_new">Save as new</button>
+        <button type="submit" name="action" value="save_prev" {% if not prev_id %}disabled{% endif %}>← Prev</button>
+        <button type="submit" name="action" value="save_next" {% if not next_id %}disabled{% endif %}>Next →</button>
+        <a href="{{ close_url }}" class="btn-close" style="margin-left: 1rem;">Close</a>
+    </div>
+</form>
+
+<script>
+(function () {
+    const input = document.getElementById('addr_num');
+    if (!input) return;
+    document.querySelectorAll('.addr-num-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const step = parseInt(btn.dataset.step, 10);
+            const current = parseInt(input.value, 10);
+            const base = Number.isNaN(current) ? 0 : current;
+            const next = base + step;
+            input.value = next < 0 ? 0 : next;
+            input.focus();
+        });
+    });
+})();
+</script>
+
+<datalist id="regions-list">
+    {% for v in lookups.regions %}<option value="{{ v }}">{% endfor %}
+</datalist>
+<datalist id="cities-list">
+    {% for v in lookups.cities %}<option value="{{ v }}">{% endfor %}
+</datalist>
+<datalist id="districts-list">
+    {% for v in lookups.districts %}<option value="{{ v }}">{% endfor %}
+</datalist>
+<datalist id="streets-list">
+    {% for v in lookups.streets %}<option value="{{ v }}">{% endfor %}
+</datalist>
+{% endblock %}
