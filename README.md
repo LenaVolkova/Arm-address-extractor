@@ -67,7 +67,7 @@ The Flask application provides an interface for annotators to review, edit, sear
 
 ### Features:
 - **Pagination & Search:** Easily browse records (50 per page) or search directly for specific record IDs.
-- **Dynamic Address Lookups:** While editing a record, the interface queries a reference table (`osmaddr`) to provide autocomplete suggestions for `region`, `city`, `district`, and `street`.
+- **Dynamic Address Lookups:** While editing a record, the interface queries a reference table (`osmaddr`) to provide autocomplete suggestions for `region`, `city`, `district`, and `street`. Content for the table 'osmaddr' consists from data available in Open Street Maps database. `db_addresses/db_addresses_new.ipynb` contains an example of script for populating the database with initial values (texts from websites and downloading addresses from OSM)
 - **Keyboard-Friendly Workflow:** Navigation buttons allow moving to the previous/next record while saving modifications.
 - **"Save as New" Option:** Allows saving edited data as a new row copy while leaving the original record intact.
 
